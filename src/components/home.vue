@@ -1,7 +1,7 @@
 <template>
   <div id="home">
     <header>
-      <router-link to="/fenlei" tag="p">分类</router-link>
+      <router-link to="/fenlei " tag="p">分类</router-link>
       <div class="center ">   
         <img src="./logo.png">
         <span>北京</span>
@@ -9,7 +9,7 @@
       </div>
 
       <div class="right">
-        <i class="iconfont icon-account"></i>
+        <i class="iconfont icon-account" @click="registClick"></i>
         <i class="iconfont icon-search" @click="searchShow"></i>
       </div>
       <div :class="isShow?'search':'hide'">
@@ -20,17 +20,23 @@
     </header><!-- /header -->
     <!-- 路由匹配到的组件将渲染在这里  是vue-router定义的全局组件-->
     <div class="main" >
-      <ul class="main_ul" v-for="(data,index) in titleList" :key="data.group_section.desc">
-        <h3>{{data.group_section.title}}</h3>
-        <p>{{data.group_section.desc}}</p>
-        
-          <li v-for="(data,index) in titleList[index].tabs" :key="data.id">
-            <img :src="data.url" >
-            <h5>{{data.title}}</h5>
-            <span>{{data.desc}}</span>
-          </li>
-        
-      </ul>
+      <div v-infinite-scroll="loadMore" 
+      infinite-scroll-disabled="loading"
+      infinite-scroll-immediate-check="false" 
+      infinite-scroll-distance="0">
+        <ul class="main_ul" v-for="(data,index) in titleList" :key="data.group_section.desc">
+          <h3>{{data.group_section.title}}</h3>
+          <p>{{data.group_section.desc}}</p>
+          
+            <li v-for="(data,index) in titleList[index].tabs" :key="data.id" @click="detailClick(data.id)">
+              <img :src="data.url" >
+              <h5>{{data.title}}</h5>
+              <span>{{data.desc}}</span>
+            </li>
+          
+        </ul>
+      </div>
+      
     </div>
     
   </div>
@@ -40,27 +46,49 @@
 
 <script>
 import "../assets/iconfont/iconfont.css";
+import router from '../router';
 export default {
   name: 'app',
   data () {
     return {
       titleList:[],
       contentList:[],
-      isShow:false
+      isShow:false,
+      loading:false,
+      current:0,
       
     }
   },
-  methods:{
-    searchShow(){
-      this.isShow = !this.isShow
-    }
-  },
+ 
   mounted(){   
-    axios.get("/hub/home/v1/web/week_choice.json?city_id=140&page=0").then(res=>{
+    axios.get("/api/home").then(res=>{
       console.log(this.contentList)
       this.titleList = res.data
       
     })
+  },
+  methods:{
+    searchShow(){
+      this.isShow = !this.isShow
+    },
+    detailClick(id){
+      console.log(id);
+      router.push(`detail/${id}`)
+    },
+    registClick(){
+      
+      router.push("/regist")
+    },
+    loadMore(){
+      console.log(123)
+      this.current++ ;
+
+      console.log(this.current)
+      axios.get(`/hub/home/v1/web/week_choice.json?city_id=140&page=${this.current}`).then(res=>{
+        //console.log(res.data);
+        this.titleList = [...this.titleList,...res.data]
+      })
+    }
   }
 }
 

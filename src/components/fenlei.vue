@@ -18,7 +18,7 @@
       <div v-for="(data,index) in classList" :key="data.id">
           <p>{{data.name}}</p>
         <ul>
-          <li v-for="(data,index) in classList[index].sub_category_list" :key="data.name">
+          <li v-for="(data,index) in classList[index].sub_category_list" :key="data.name" @click="handleclick(data.id)">
             {{data.name}}
           </li>
         </ul>
@@ -31,6 +31,7 @@
 
 
 <script>
+import router from '../router';//router 路由控制器
 	export default{
 		data(){
       return{
@@ -38,10 +39,17 @@
       }
     },
     mounted(){
-      axios.get("/cdn/home/djEvdmlydHVhbC9pbl9jYXRlZ29yeS5qc29uP2NpdHlfaWQ9MTQwJmlzX25ld19sb2NhbD1mYWxzZSZtZDU9NGEwY2RiMTc3NjEyN2ZhZjBiZmZlMjZiYzgyYjUxYzMmMjAxNzA4MDUxNDAw.json").then(res=>{
-        console.log(this.classList)
+      axios.get("/api/fenlei").then(res=>{
+        //console.log(this.classList)
         this.classList = res.data
       })
+    },
+    methods:{
+      handleclick(id){
+        console.log(id);
+        // 通过js的方式进行（单页面）页面跳转
+         router.push(`/list/${id}`);
+      }
     }
 	}
 	

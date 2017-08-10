@@ -8,6 +8,8 @@ import JingXuan from "./components/jingxuan.vue";
 import ShopCar from "./components/shopcar.vue";
 import Gift from "./components/gift.vue";
 import User from "./components/user.vue";
+import Regist from "./components/regist.vue";
+import Login from "./components/login.vue";
 
 Vue.use(VueRouter);//安装路由功能
 
@@ -16,13 +18,15 @@ const routes = [
 	{path: '/', redirect: '/home' },
 	
 	{path: '/home', component: Home},
-	{path: '/list', component: List},
 	{path: '/fenlei', component: Fenlei},
 	{path: '/jingxuan', component: JingXuan},
 	{path: '/shopcar', component: ShopCar},
 	{path: '/gift', component: Gift},
 	{path: '/user', component: User},
-	{path: '/detail/:detailid', component: Detail},
+	{path: '/regist', component: Regist},
+	{path: '/login', component: Login},
+	{path: '/list/:listID', component: List},
+	{path: '/detail/:detailID/:urlID', component: Detail},
 
 
 ]
