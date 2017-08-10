@@ -39,7 +39,7 @@ import router from '../router';//router 路由控制器
       }
     },
     mounted(){
-      axios.get("/api/fenlei").then(res=>{
+      axios.get("/cdn/home/djEvdmlydHVhbC9pbl9jYXRlZ29yeS5qc29uP2NpdHlfaWQ9MTQwJmlzX25ld19sb2NhbD1mYWxzZSZtZDU9NGEwY2RiMTc3NjEyN2ZhZjBiZmZlMjZiYzgyYjUxYzMmMjAxNzA4MDUxNDAw.json").then(res=>{
         //console.log(this.classList)
         this.classList = res.data
       })

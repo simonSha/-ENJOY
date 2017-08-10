@@ -52,7 +52,7 @@
     				</li>
     				<li>
 	    				<i class="iconfont icon-phone"></i>
-	    				{{content_twoList.restaurant_phone_numbers[0]}}
+	    				{{phone}}
 	    				<i class="iconfont icon-more"></i>
     				</li>
     			</ul>	
@@ -145,32 +145,34 @@ Vue.component(SwipeItem.name, SwipeItem);
 				content_fiveList:[],
 				content_sixList:[],
 				change:"1042511",
+				phone:0,
 				url:`/product/info/product_detail.json?product_id=1042511&sub_product_id=${this.$route.params.detailID}`,
 				
 			}
 		},
 		mounted(){
-			axios.get(`/api/detail`).then(res=>{
-				console.log(res.data.modules[4].data.recommend)
+			axios.get(`/product/info/product_detail.json?product_id=${this.$route.params.detailID}&sub_product_id=${this.$route.params.urlID}`).then(res=>{
+				//console.log(res.data.modules[4].data.recommend)
 				this.detailList = res.data.basic
 				this.content_twoList = res.data.modules[0].data.restaurants[0]
 				this.content_threeList = res.data.modules[1].data.contents
 				this.content_fourList = res.data.modules[2].data.lights
 				this.content_fiveList = res.data.modules[3].data.contents
 				this.content_sixList = res.data.modules[4].data.recommend
-				console.log(this.url)
+				this.phone = this.content_twoList.restaurant_phone_numbers[0]
+				//console.log(this.url)
 
 			})
 		},
 		methods:{
 			nameClicl(){
 				this.isUlShow = true;
-				console.log(666)
+				
 			},
 			hendleClick(id){
 			 this.url = `/product/info/product_detail.json?product_id=`+ id
 				 router.push(`/detail/${id}`)
-			    console.log(this.url)
+			    //console.log(this.url)
 			}
 		}
 	}
@@ -183,6 +185,8 @@ Vue.component(SwipeItem.name, SwipeItem);
 #detail{
 	display: flex;
 	flex-direction: column;
+	width: 100%;
+	overflow: hidden;
 
 	footer{
 		z-index: 5;
@@ -522,13 +526,15 @@ Vue.component(SwipeItem.name, SwipeItem);
 					}
 				}
 				li:nth-of-type(2){
-					padding-left: 140px;
+					margin-left: 135px;
+					width: 56%;
 					font-size: 14px;
 					color: #2c3038;
 					padding-top: 5px;
 				}
 				li:nth-of-type(3){
-					padding-left: 140px;
+					margin-left: 135px;
+					width: 56%;
 					font-size: 14px;
 					color: #ff3939;
 					padding-top: 15px;

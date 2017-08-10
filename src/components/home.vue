@@ -28,7 +28,7 @@
           <h3>{{data.group_section.title}}</h3>
           <p>{{data.group_section.desc}}</p>
           
-            <li v-for="(data,index) in titleList[index].tabs" :key="data.id" @click="detailClick(data.id)">
+            <li v-for="(data,index) in titleList[index].tabs" :key="data.id" @click="detailClick(data.id,data.enjoy_url.substring(29,36))">
               <img :src="data.url" >
               <h5>{{data.title}}</h5>
               <span>{{data.desc}}</span>
@@ -61,7 +61,7 @@ export default {
   },
  
   mounted(){   
-    axios.get("/api/home").then(res=>{
+    axios.get("/hub/home/v1/web/week_choice.json?city_id=140&page=0").then(res=>{
       console.log(this.contentList)
       this.titleList = res.data
       
@@ -71,19 +71,20 @@ export default {
     searchShow(){
       this.isShow = !this.isShow
     },
-    detailClick(id){
-      console.log(id);
-      router.push(`detail/${id}`)
-    },
+    detailClick(id,idd){
+          //console.log(id,idd);
+              
+          router.push(`detail/${idd}/${id}`)
+        },
     registClick(){
       
       router.push("/regist")
     },
     loadMore(){
-      console.log(123)
+      
       this.current++ ;
 
-      console.log(this.current)
+      //console.log(this.current)
       axios.get(`/hub/home/v1/web/week_choice.json?city_id=140&page=${this.current}`).then(res=>{
         //console.log(res.data);
         this.titleList = [...this.titleList,...res.data]

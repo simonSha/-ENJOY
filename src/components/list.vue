@@ -36,7 +36,7 @@
 			infinite-scroll-disabled="loading"
 			infinite-scroll-immediate-check="false" 
 			infinite-scroll-distance="0">
-				<li v-for="(data,index) in infoList" :key="data.merchant_id" @click="detailClick(data.product_id,data.sub_product_id_list[0])">
+				<li v-for="(data,index) in infoList" :key="data.merchant_id" @click="detailClick(data.product_id,data.sub_product_id_list)">
 					<img :src="data.product_image">
 					<span>{{data.short_name}}</span>
 					<div class="youNR">
@@ -77,13 +77,13 @@ Vue.use(InfiniteScroll);
 		
 		
 		mounted(){	   
-			axios.get(`/api/list`).then(res=>{
+			axios.get(`/4/tab/category_product_list.json?category_id=${this.$route.params.listID}&sort=1&from_id=0&city_id=140&page=0`).then(res=>{
 				//console.log(res.data);
 				this.infoList = res.data
 				
 			})
-			axios.get(`/api/list1`).then(res=>{
-				
+			axios.get(`/4/tab/sub_category.json?category_id=${this.$route.params.listID}&city_id=140&from_id=0`).then(res=>{
+				console.log(res.data.sub_category_list[0].product_count)
 				this.total = res.data.sub_category_list[0].product_count
 				this.time = Math.floor((this.total)/20)
 			})
@@ -96,19 +96,18 @@ Vue.use(InfiniteScroll);
 		  	this.isPaixuShow = !this.isPaixuShow
 		  },
 		  detailClick(id,id2){
-		  	router.push(`/detail/${id}/${id2}`)
-		  	console.log(id)
+		  	router.push(`/detail/${id}/${id2[0]}`)
+		  	//console.log(id)
 		  },
 		  loadMore(){
-		  	console.log(123)
 		  	this.current++ ;
 
 		  	if(this.current>this.time){
 		  		this.msg = "没有数据了~"
 		  		return;
 		  	}
-		  	console.log(this.current)
-		  	axios.get(`/api/list1`).then(res=>{
+		  	//console.log(this.current)
+		  	axios.get(`/4/tab/category_product_list.json?category_id=${this.$route.params.listID}&sort=1&from_id=0&city_id=140&page=${this.current}`).then(res=>{
 		  		//console.log(res.data);
 		  		this.infoList = [...this.infoList,...res.data]
 		  	})
